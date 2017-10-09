@@ -8,7 +8,7 @@
         tools:context="com.example.sahko.androidtest.MainActivity">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/nameText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -27,9 +27,22 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:onClick="sendMessage"
-        android:text="Button"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editText"
-        app:layout_constraintLeft_toRightOf="@+id/editText"
+        android:text="@string/button_send"
+        app:layout_constraintBaseline_toBaselineOf="@+id/nameText"
+        app:layout_constraintLeft_toRightOf="@+id/nameText"
         app:layout_constraintRight_toRightOf="parent"
         tools:text="@string/button_send" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:onClick="addActivity"
+        android:text="Add Activity"
+        app:layout_constraintTop_toBottomOf="@+id/nameText"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -2,4 +2,7 @@
     <string name="app_name">AndroidTest</string>
     <string name="edit_message">Enter your name</string>
     <string name="button_send">Send</string>
+    <string name="action_description_text">What do you do?</string>
+    <string name="button_send_action">Perform Action</string>
+    <string name="add_roll_button">Add another roll</string>
 </resources>
