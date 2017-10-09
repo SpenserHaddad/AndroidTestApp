@@ -20,7 +20,7 @@ public class AddCharacterActionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_character_action);
 
         this.diceRolls = new DieRollAdapter(this, Arrays.asList(new DieRoll()));
-        ListView dieRollsListView = (ListView) findViewById(R.id.dieRollsListView);
+        ListView dieRollsListView = findViewById(R.id.dieRollsListView);
         dieRollsListView.setAdapter(diceRolls);
         dieRollsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -5,4 +5,7 @@
     <string name="action_description_text">What do you do?</string>
     <string name="button_send_action">Perform Action</string>
     <string name="add_roll_button">Add another roll</string>
+    <string name="welcome_screen_text">Welcome to the Firebase Example</string>
+    <string name="sign_in_button_text">Sign in</string>
+    <string name="explore_button_text">Explore</string>
 </resources>
