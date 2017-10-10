@@ -72,4 +72,6 @@ public class FirebaseUtil {
     public static DatabaseReference getFollowersRef() {
         return getBaseRef().child("followers");
     }
+
+    public static DatabaseReference getHostedRef() { return getBaseRef().child("hosted"); }
 }

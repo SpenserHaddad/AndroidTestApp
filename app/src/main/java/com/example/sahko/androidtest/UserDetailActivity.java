@@ -52,7 +52,7 @@ public class UserDetailActivity extends BaseActivity {
         Intent intent = getIntent();
         mUserId = intent.getStringExtra(USER_ID_EXTRA_NAME);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

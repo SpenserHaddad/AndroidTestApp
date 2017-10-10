@@ -14,10 +14,13 @@
     <string name="server_client_id">85010793512-5t8ejsijkp68vgudb9jn00ct1tnrgoac.apps.googleusercontent.com</string>
     <string name="server_widget_url">http://www.google.com</string>
 
-    <string name="title_activity_feeds">FeedsActivity</string>
+    <string name="title_activity_feeds">My Games</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_login">Sign in</string>
+
+    <string name="add_player_button">Add Player</string>
+    <string name="create_game_button">Create Game</string>
 
     <!-- Content Description for images -->
     <string name="desc_google_icon">Google Logo</string>

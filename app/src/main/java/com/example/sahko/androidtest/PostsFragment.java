@@ -36,6 +36,8 @@ public class PostsFragment extends Fragment {
     private static final String KEY_TYPE = "type";
     public static final int TYPE_HOME = 1001;
     public static final int TYPE_FEED = 1002;
+    public static final int TYPE_HOST = 2001;
+    public static final int TYPE_PLAYER = 2002;
     private int recyclerViewPosition = 0;
     private OnPostSelectedListener listener;
 
@@ -87,6 +89,7 @@ public class PostsFragment extends Fragment {
         }
 
         switch (getArguments().getInt(KEY_TYPE)) {
+            case TYPE_PLAYER:
             case TYPE_FEED:
                 Log.d(TAG, "Restoring recycler view position (all): " + recyclerViewPosition);
                 Query allPostsQuery = FirebaseUtil.getPostsRef();
@@ -99,6 +102,7 @@ public class PostsFragment extends Fragment {
                     }
                 });
                 break;
+            case TYPE_HOST:
             case TYPE_HOME:
                 Log.d(TAG, "Restoring recycler view position (following): " + recyclerViewPosition);
 

@@ -32,7 +32,6 @@ import com.example.sahko.androidtest.Models.*;
 
 public class FeedsActivity extends BaseActivity implements PostsFragment.OnPostSelectedListener {
     private static final String TAG = "FeedsActivity";
-    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +43,20 @@ public class FeedsActivity extends BaseActivity implements PostsFragment.OnPostS
 
         ViewPager viewPager = findViewById(R.id.feeds_view_pager);
         FeedsPagerAdapter adapter = new FeedsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(PostsFragment.newInstance(PostsFragment.TYPE_HOME), "HOME");
-        adapter.addFragment(PostsFragment.newInstance(PostsFragment.TYPE_FEED), "FEED");
+        adapter.addFragment(PostsFragment.newInstance(PostsFragment.TYPE_HOST), "HOSTED GAMES");
+        adapter.addFragment(PostsFragment.newInstance(PostsFragment.TYPE_PLAYER), "JOINED GAMES");
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
         TabLayout tabLayout = findViewById(R.id.feeds_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-        fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user == null || user.isAnonymous()) {
-                    Toast.makeText(FeedsActivity.this, "You must sign-in to post.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FeedsActivity.this, "You must sign-in to create a game.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Intent newPostIntent = new Intent(FeedsActivity.this, NewPostActivity.class);
@@ -120,7 +119,7 @@ class FeedsPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> fragmentList = new ArrayList<>();
     private final List<String> fragmentTitleList = new ArrayList<>();
 
-    public FeedsPagerAdapter(FragmentManager manager) { super(manager); }
+    FeedsPagerAdapter(FragmentManager manager) { super(manager); }
 
     @Override
     public Fragment getItem(int position) {return fragmentList.get(position);}
@@ -128,7 +127,7 @@ class FeedsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() { return fragmentList.size(); }
 
-    public void addFragment(Fragment fragment, String title) {
+    void addFragment(Fragment fragment, String title) {
         fragmentList.add(fragment);
         fragmentTitleList.add(title);
     }
