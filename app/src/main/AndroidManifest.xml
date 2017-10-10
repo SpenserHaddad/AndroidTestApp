@@ -26,6 +26,16 @@
         <activity android:name=".AddCharacterActionActivity" />
         <activity android:name=".FeedsActivity" />
         <activity android:name=".ProfileActivity" />
+        <activity android:name=".NewPostActivity" />
+        <activity android:name=".CommentsActivity" />
+        <activity android:name=".UserDetailActivity"></activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- To geotag new posts with current location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- To get pictures from camera for new posts -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

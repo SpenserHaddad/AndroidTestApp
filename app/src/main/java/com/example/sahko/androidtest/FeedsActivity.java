@@ -1,6 +1,8 @@
 package com.example.sahko.androidtest;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -26,7 +28,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedsActivity extends BaseActivity {
+import com.example.sahko.androidtest.Models.*;
+
+public class FeedsActivity extends BaseActivity implements PostsFragment.OnPostSelectedListener {
     private static final String TAG = "FeedsActivity";
     private FloatingActionButton fab;
 
@@ -36,7 +40,7 @@ public class FeedsActivity extends BaseActivity {
         setContentView(R.layout.activity_feeds);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         ViewPager viewPager = findViewById(R.id.feeds_view_pager);
         FeedsPagerAdapter adapter = new FeedsPagerAdapter(getSupportFragmentManager());
@@ -59,7 +63,7 @@ public class FeedsActivity extends BaseActivity {
     @Override
     public void onPostComment(String postKey) {
         Intent intent = new Intent(this, CommentsActivity.class);
-        intent.putExtra(CommentActivity.POST_KEY_EXTRA, posKey);
+        intent.putExtra(CommentsActivity.POST_KEY_EXTRA, postKey);
         startActivity(intent);
     }
 

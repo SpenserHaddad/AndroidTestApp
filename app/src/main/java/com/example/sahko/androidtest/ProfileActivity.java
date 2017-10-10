@@ -18,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -53,17 +54,18 @@ public class ProfileActivity extends BaseActivity implements
         setContentView(R.layout.activity_profile);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         auth = FirebaseAuth.getInstance();
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,
-                        new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                            .requestEmail()
-                            .requestIdToken(getString(R.string.default_web_client_id))
-                            .build())
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
         signInUi = findViewById(R.id.sign_in_ui);
@@ -71,6 +73,11 @@ public class ProfileActivity extends BaseActivity implements
 
         profilePhoto = findViewById(R.id.profile_user_photo);
         profileUsername = findViewById(R.id.profile_user_name);
+        SignInButton button = findViewById(R.id.launch_sign_in);
+        button.setSize(SignInButton.SIZE_STANDARD);
+        findViewById(R.id.launch_sign_in).setOnClickListener(this);
+        findViewById(R.id.show_feeds_button).setOnClickListener(this);
+        findViewById(R.id.sign_out_button).setOnClickListener(this);
     }
 
     @Override
@@ -85,7 +92,7 @@ public class ProfileActivity extends BaseActivity implements
                 Auth.GoogleSignInApi.signOut(googleApiClient);
                 showSignedOutUI();
                 break;
-            case R.idk.show_feeds_button:
+            case R.id.show_feeds_button:
                 Intent feedsIntent = new Intent(this, FeedsActivity.class);
                 startActivity(feedsIntent);
                 break;
@@ -111,12 +118,14 @@ public class ProfileActivity extends BaseActivity implements
             GoogleSignInAccount acct = result.getSignInAccount();
             firebaseAuthWithGoogle(acct);
         } else {
+            Toast.makeText(this, "Couldn't sign in", Toast.LENGTH_SHORT).show();
             // Logging would go here
         }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        String id = acct.getIdToken();
+        AuthCredential credential = GoogleAuthProvider.getCredential(id, null);
         showProgressDialog(getString(R.string.profile_progress_message));
         auth.signInWithCredential(credential)
                 .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
@@ -128,7 +137,6 @@ public class ProfileActivity extends BaseActivity implements
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        FirebaseCrash.logcat(Log.ERROR, TAG, "auth:onFailure:" + e.getMessage());
                         handleFirebaseAuthResult(null);
                     }
                 });
@@ -157,7 +165,7 @@ public class ProfileActivity extends BaseActivity implements
         }
 
         if (firebaseUser.getPhotoUrl() != null) {
-            GlideUtil.loadProfileIcon(firebaseUser.getPhotoUrl().toString(), mProfilePhoto);
+            GlideUtil.loadProfileIcon(firebaseUser.getPhotoUrl().toString(), profilePhoto);
         }
         Map<String, Object> updateValues = new HashMap<>();
         updateValues.put("displayName", firebaseUser.getDisplayName() != null ? firebaseUser.getDisplayName() : "Anonymous");
@@ -209,7 +217,7 @@ public class ProfileActivity extends BaseActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null && !currentUser.isAnonymous()) {
             dismissProgressDialog();
             showSignedInUI(currentUser);

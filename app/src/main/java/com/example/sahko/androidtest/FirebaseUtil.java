@@ -4,6 +4,7 @@ package com.example.sahko.androidtest;
  * Created by sahko on 10/8/2017.
  */
 
+import com.example.sahko.androidtest.Models.Author;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +21,12 @@ public class FirebaseUtil {
             return user.getUid();
         }
         return null;
+    }
+
+    public static Author getAuthor() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) return null;
+        return new Author(user.getDisplayName(), user.getPhotoUrl().toString(), user.getUid());
     }
 
     public static DatabaseReference getCurrentUserRef() {
