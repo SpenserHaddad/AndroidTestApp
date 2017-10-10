@@ -1,4 +1,5 @@
 <resources>
+    <string name="default_label">Custom FriendlyPix</string>
     <string name="app_name">AndroidTest</string>
     <string name="edit_message">Enter your name</string>
     <string name="button_send">Send</string>

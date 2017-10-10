@@ -40,10 +40,16 @@ public class FeedsActivity extends BaseActivity implements PostsFragment.OnPostS
         setContentView(R.layout.activity_feeds);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
         ViewPager viewPager = findViewById(R.id.feeds_view_pager);
         FeedsPagerAdapter adapter = new FeedsPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(PostsFragment.newInstance(PostsFragment.TYPE_HOME), "HOME");
+        adapter.addFragment(PostsFragment.newInstance(PostsFragment.TYPE_FEED), "FEED");
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(1);
+        TabLayout tabLayout = findViewById(R.id.feeds_tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

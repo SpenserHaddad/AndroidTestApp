@@ -9,13 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+                  android:label="@string/default_label"
+                  android:theme="@style/AppTheme.NoActionBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".DisplayMessageActivity"
             android:parentActivityName=".MainActivity">
@@ -23,11 +26,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
         <activity android:name=".AddCharacterActionActivity" />
-        <activity android:name=".FeedsActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".NewPostActivity" />
-        <activity android:name=".CommentsActivity" />
+
+        <activity android:name=".FeedsActivity"
+                  android:label="@string/default_label"
+                  android:theme="@style/AppTheme.NoActionBar.Fullscreen" />
+
+        <activity android:name=".ProfileActivity"
+                  android:label="@string/default_label"
+                  android:theme="@style/AppTheme.NoActionBar"  />
+
+        <activity android:name=".NewPostActivity"
+                  android:label="@string/title_activity_new_post"
+                  android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".CommentsActivity"
+                  android:label="@string/title_activity_comments"
+                  android:theme="@style/AppTheme.NoActionBar"  />
         <activity android:name=".UserDetailActivity"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
