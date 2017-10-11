@@ -48,6 +48,4 @@ public class NewGameUploadTaskFragment extends Fragment {
         super.onDetach();
         callbacks = null;
     }
-
-    public void uploadGame
 }

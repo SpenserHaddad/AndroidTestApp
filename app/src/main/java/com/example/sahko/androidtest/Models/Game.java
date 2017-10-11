@@ -6,8 +6,12 @@ package com.example.sahko.androidtest.Models;
 
 public class Game {
     private String name;
-    private final User owner;
+    private User owner;
     // private List<User> players;
+
+    public Game() {
+
+    }
 
     public Game(String name, User owner) {
         this.name = name;
@@ -15,7 +19,8 @@ public class Game {
     }
 
     public String getName() { return name; }
-    public void setName(String newName) { name = newName; }
 
     public User getOwner() { return owner; }
+
+    public String getUid() { return name + "-" + owner.getUid(); }
 }

@@ -43,8 +43,8 @@ public class FeedsActivity extends BaseActivity implements PostsFragment.OnPostS
 
         ViewPager viewPager = findViewById(R.id.feeds_view_pager);
         FeedsPagerAdapter adapter = new FeedsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(PostsFragment.newInstance(PostsFragment.TYPE_HOST), "HOSTED GAMES");
-        adapter.addFragment(PostsFragment.newInstance(PostsFragment.TYPE_PLAYER), "JOINED GAMES");
+        adapter.addFragment(PostsFragment.newInstance(PostsFragment.TYPE_HOME), "HOME");
+        adapter.addFragment(PostsFragment.newInstance(PostsFragment.TYPE_FEED), "FEED");
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
         TabLayout tabLayout = findViewById(R.id.feeds_tab_layout);
@@ -59,7 +59,7 @@ public class FeedsActivity extends BaseActivity implements PostsFragment.OnPostS
                     Toast.makeText(FeedsActivity.this, "You must sign-in to create a game.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent newPostIntent = new Intent(FeedsActivity.this, NewPostActivity.class);
+                Intent newPostIntent = new Intent(FeedsActivity.this, NewGameActivity.class);
                 startActivity(newPostIntent);
             }
         });

@@ -1,35 +1,44 @@
 package com.example.sahko.androidtest;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.sahko.androidtest.Models.Game;
 import com.example.sahko.androidtest.Models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class NewGameActivity extends AppCompatActivity {
 
     private EditText gameNameText;
     private static final String TAG = "NewGameActivity";
-    private static final String TAG_TASK_FRAGMENT = "newPostUploadTaskFragment";
+    private static final String projectId = "ec601testproject";
+    private Game lastReadGame;
 
-    private NewGameUploadTaskFragment taskFragment;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +46,7 @@ public class NewGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_game);
         gameNameText = findViewById(R.id.game_name_text);
         gameNameText.setHint("New Game Name");
-
-        FragmentManager fm = getSupportFragmentManager();
-        taskFragment = (NewGameUploadTaskFragment) fm.findFragmentByTag(TAG_TASK_FRAGMENT);
+        Query reference = db.collection("games").whereEqualTo("name", "AnotherTestGame");
     }
 
     public void addPlayer(View v) {
@@ -50,18 +57,49 @@ public class NewGameActivity extends AppCompatActivity {
 
     public void createGame(View v) {
         String gameName = gameNameText.getText().toString();
-        if (gameName == null) {
+        if (gameName.isEmpty()) {
             Toast.makeText(NewGameActivity.this, "Enter a name for your game.", Toast.LENGTH_SHORT).show();
             return;
         }
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        User owner = new User(user.getDisplayName(), user.getPhotoUrl().toString(), user.getUid());
-        Game newGame = new Game(gameName, owner);
+/*
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference();
-        ref.child(gameName).setValue(newGame);
+        DatabaseReference ownerRef = dbRef.child("users").child(currentUser.getUid());
+        ownerRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User owner = dataSnapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        */
+        User owner = FirebaseFirestoreUtil.getCurrentUser();
+
+
+        Game game = new Game(gameName, owner);
+
+        //dbRef.child("games").child(game.getUid()).setValue(game);
+
+
+        db.collection("games").document(game.getUid()).set(game)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Intent intent = new Intent(NewGameActivity.this, FeedsActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+        db.collection("games").document(game.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                lastReadGame = documentSnapshot.toObject(Game.class);
+            }
+        });
+        }
     }
-
-
-}

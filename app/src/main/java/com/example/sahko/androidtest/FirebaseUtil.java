@@ -5,6 +5,7 @@ package com.example.sahko.androidtest;
  */
 
 import com.example.sahko.androidtest.Models.Author;
+import com.example.sahko.androidtest.Models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;

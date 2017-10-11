@@ -65,7 +65,6 @@
                 android:id="@+id/profile_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:textStyle="bold"
                 android:textSize="30sp"
                 style="@style/TextAppearance.AppCompat.Title"/>
@@ -73,14 +72,21 @@
                 android:id="@+id/show_feeds_button"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:text="@string/show_feed_button_text"
                 style="@style/Widget.AppCompat.Button.Colored"/>
+
+            <Button
+                android:id="@+id/show_games_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/show_games_button"
+                tools:text="@string/show_games_button" />
+
             <Button
                 android:id="@+id/sign_out_button"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:text="@string/sign_out_button_text"
                 style="@style/Widget.AppCompat.Button.Colored"/>
         </LinearLayout>

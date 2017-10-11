@@ -29,6 +29,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,9 +77,11 @@ public class ProfileActivity extends BaseActivity implements
         profileUsername = findViewById(R.id.profile_user_name);
         SignInButton button = findViewById(R.id.launch_sign_in);
         button.setSize(SignInButton.SIZE_STANDARD);
+
         findViewById(R.id.launch_sign_in).setOnClickListener(this);
         findViewById(R.id.show_feeds_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
+        findViewById(R.id.show_games_button).setOnClickListener(this);
     }
 
     @Override
@@ -95,6 +99,10 @@ public class ProfileActivity extends BaseActivity implements
             case R.id.show_feeds_button:
                 Intent feedsIntent = new Intent(this, FeedsActivity.class);
                 startActivity(feedsIntent);
+                break;
+            case R.id.show_games_button:
+                Intent gameIntent = new Intent(this, GameActivity.class);
+                startActivity(gameIntent);
                 break;
         }
     }

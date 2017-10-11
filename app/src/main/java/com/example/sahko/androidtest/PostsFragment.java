@@ -2,6 +2,7 @@ package com.example.sahko.androidtest;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,9 +16,11 @@ import com.example.sahko.androidtest.Models.Author;
 import com.example.sahko.androidtest.Models.Post;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import com.example.sahko.androidtest.Models.*;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * Created by sahko on 10/10/2017.
@@ -36,8 +40,6 @@ public class PostsFragment extends Fragment {
     private static final String KEY_TYPE = "type";
     public static final int TYPE_HOME = 1001;
     public static final int TYPE_FEED = 1002;
-    public static final int TYPE_HOST = 2001;
-    public static final int TYPE_PLAYER = 2002;
     private int recyclerViewPosition = 0;
     private OnPostSelectedListener listener;
 
@@ -89,7 +91,6 @@ public class PostsFragment extends Fragment {
         }
 
         switch (getArguments().getInt(KEY_TYPE)) {
-            case TYPE_PLAYER:
             case TYPE_FEED:
                 Log.d(TAG, "Restoring recycler view position (all): " + recyclerViewPosition);
                 Query allPostsQuery = FirebaseUtil.getPostsRef();
@@ -102,7 +103,6 @@ public class PostsFragment extends Fragment {
                     }
                 });
                 break;
-            case TYPE_HOST:
             case TYPE_HOME:
                 Log.d(TAG, "Restoring recycler view position (following): " + recyclerViewPosition);
 
@@ -217,9 +217,29 @@ public class PostsFragment extends Fragment {
             @Override
             public void onViewRecycled(PostViewHolder holder) {
                 super.onViewRecycled(holder);
-//                FirebaseUtil.getLikesRef().child(holder.mPostKey).removeEventListener(holder.mLikeListener);
             }
         };
+    }
+
+    private FirebaseRecyclerAdapter<Game, GameViewHolder> getFirebaseGameRecyclerAdapter(DatabaseReference ref) {
+        return new FirebaseRecyclerAdapter<Game, GameViewHolder>(Game.class, R.layout.game_item, GameViewHolder.class, ref) {
+            @Override
+            protected void populateViewHolder(GameViewHolder viewHolder, Game model, int position) {
+                setupGame(viewHolder, model, position, null);
+            }
+        };
+    }
+
+    private void setupGame(GameViewHolder viewHolder, Game game, int position, String inPostKey) {
+        viewHolder.setGameNameText(game.getName());
+        viewHolder.setOwnerText(game.getOwner());
+
+        final String postKey;
+        if (adapter instanceof  FirebaseRecyclerAdapter) {
+            postKey = ((FirebaseRecyclerAdapter) adapter).getRef(position).getKey();
+        } else {
+            postKey = inPostKey;
+        }
     }
 
     private void setupPost(final PostViewHolder postViewHolder, final Post post, final int position, final String inPostKey) {
